@@ -1,0 +1,24 @@
+# to be able to mount in MacOS create podman vm as below
+# podman machine init --now --cpus=4 --memory=4096 -v $HOME:$HOME
+version: "3.7"
+services:
+  quoter_postgre:
+    image: bitnami/postgresql:11
+    container_name: quoter_postgre
+    environment:
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: postgres
+      POSTGRESQL_DATABASE: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+    volumes:
+      - ./container-data/postgresql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  quoter:
+    driver: local
